@@ -1,0 +1,152 @@
+body {
+    background-color: #666;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow:hidden;
+    margin:0px; padding:0px;
+    font-family: 'Press Start 2P', cursive;
+}
+
+body * {
+    position: absolute;
+    display: block;
+    margin:0px;
+    padding:0px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+}
+
+container {
+    background: lightblue;
+    width:800px; height:600px;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    overflow:hidden;
+}
+
+grid{
+    background: url('../images/grid.png');
+    height: 600px;
+    width:300px;
+    position: relative;
+}
+
+containerBlock{
+    position: absolute;
+    display: inline-block;
+    transform: translate(0, 0);
+}
+
+
+containerBlock.container_yellow{
+    height: 60px;
+    width: 60px;
+}
+
+
+containerBlock.container_lightBlue{
+    width:30px;
+    height:120px;
+}
+
+containerBlock.container_red,
+containerBlock.container_green,
+containerBlock.container_purple,
+containerBlock.container_blue,
+containerBlock.container_orange{
+    width: 90px;
+    height:60px;
+}
+
+containerBlock block.red:first-child,
+containerBlock block.yellow:first-child,
+containerBlock block.purple:first-child,
+containerBlock block.blue:first-child,
+containerBlock block.lightBlue:first-child{
+    top:0;
+    left:0;
+}
+
+containerBlock block.red:nth-child(2),
+containerBlock block.green:nth-child(2),
+containerBlock block.purple:nth-child(2){
+    top:0;
+    left:30px;
+}
+
+containerBlock block.red:nth-child(3),
+containerBlock block.green:nth-child(3),
+containerBlock block.blue:nth-child(3),
+containerBlock block.orange:nth-child(3),
+containerBlock block.purple:last-child{
+    top:30px;
+    left:30px;
+}
+
+containerBlock block.red:last-child,
+containerBlock block.blue:last-child,
+containerBlock block.orange:nth-child(2),
+containerBlock block.yellow:last-child{
+    bottom:0px;
+    right:0px;
+}
+
+containerBlock block.green:first-child,
+containerBlock block.orange:first-child,
+containerBlock block.yellow:nth-child(2),
+containerBlock block.purple:nth-child(3){
+    top:0;
+    right:0;
+}
+
+containerBlock block.lightBlue:nth-child(2),
+containerBlock block.blue:nth-child(2){
+    top:30px;
+    left:0;
+}
+
+containerBlock block.lightBlue:nth-child(3){
+    top:60px;
+    left:0;
+}
+
+containerBlock block.green:last-child,
+containerBlock block.lightBlue:last-child,
+containerBlock block.orange:last-child,
+containerBlock block.yellow:nth-child(3){
+    bottom:0;
+    left:0;
+}
+
+block{
+    position: absolute;
+    width:30px;
+    height:30px;
+}
+
+block.red{
+    background: #f0524f;
+}
+
+block.green{
+    background: #61ee56;
+}
+
+block.yellow{
+    background: #eee939;
+}
+
+block.purple{
+    background: #b143ee;
+}
+
+block.lightBlue{
+    background: #6adbee;
+}
+
+block.blue{
+    background: #4649ee;
+}
+
+block.orange{
+    background: #ee8c3f;
+}
