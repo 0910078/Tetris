@@ -19,6 +19,10 @@ class Game {
         return Game.instance;
     }
 
+    public addNewTetrisBlock(){
+        this.tetrisBlock = new tetrisBlock();
+    }
+
 }
 
 window.addEventListener("load", function(){

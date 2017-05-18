@@ -103,6 +103,9 @@ var Game = (function () {
         }
         return Game.instance;
     };
+    Game.prototype.addNewTetrisBlock = function () {
+        this.tetrisBlock = new tetrisBlock();
+    };
     return Game;
 }());
 window.addEventListener("load", function () {
@@ -137,6 +140,12 @@ var Moving = (function () {
         }
         else if (k == ' ') {
             this.deg = this.deg + 90;
+            var mainEvent = this.tetrisBlock.div.getBoundingClientRect();
+            var mainEventLeft = mainEvent.left;
+            console.log(mainEventLeft);
+            var restXpos = mainEvent.left % 3;
+            console.log(restXpos);
+            this.tetrisBlock.x = this.tetrisBlock.x - restXpos;
         }
     };
     Moving.prototype.move = function () {
@@ -180,12 +189,14 @@ var tetrisBlock = (function (_super) {
     tetrisBlock.prototype.move = function () {
         if (this.y < 540)
             setInterval(this.behavior.update(), 5000);
-        if (this.y > 540)
+        if (this.y > 540) {
             this.behavior.stop();
+            var g = Game.getInstance();
+            g.addNewTetrisBlock();
+        }
     };
     tetrisBlock.prototype.onKeyDown = function (e) {
         this.behavior.onKeyDown(e.key);
-        console.log("Pressed key");
     };
     return tetrisBlock;
 }(GameObject));

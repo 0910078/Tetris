@@ -43,14 +43,17 @@ class tetrisBlock extends GameObject{
         if(this.y < 540)
             setInterval(this.behavior.update(), 5000);
 
-        if(this.y > 540)
+        if(this.y > 540) {
             this.behavior.stop();
+            let g: Game = Game.getInstance();
+            g.addNewTetrisBlock();
+        }
 
     }
 
     private onKeyDown(e: KeyboardEvent): void{
         this.behavior.onKeyDown(e.key);
-        console.log("Pressed key");
+        // console.log(this.y);
     }
 
 

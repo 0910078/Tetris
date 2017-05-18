@@ -35,6 +35,12 @@ class Moving implements Behavior{
         }
         else if(k == ' '){
             this.deg = this.deg + 90;
+            let mainEvent = this.tetrisBlock.div.getBoundingClientRect();
+            let mainEventLeft = mainEvent.left;
+            console.log(mainEventLeft);
+            let restXpos = mainEvent.left % 3;
+            console.log(restXpos);
+            this.tetrisBlock.x = this.tetrisBlock.x - restXpos;
         }
     }
     private move(){
