@@ -1,10 +1,10 @@
 class Moving implements Behavior{
     private speed:number;
-    private tetrisBlock:tetrisBlock;
+    private tetrisBlock:TetrisBlock;
     private deg: number;
     private stopMoving:boolean;
 
-    constructor(s:number, t:tetrisBlock){
+    constructor(s:number, t:TetrisBlock){
         this.speed = s;
         this.tetrisBlock = t;
         this.deg = 0;
@@ -12,47 +12,55 @@ class Moving implements Behavior{
     }
 
     update(){
-        if(!this.stopMoving){
-            this.move();
-        }
+        this.move();
     }
 
     stop(){
-        this.stopMoving = true;
+        this.tetrisBlock.behavior = new StopMoving(this.tetrisBlock);
     }
 
-    onKeyDown(k:string){
-        if(!this.stopMoving){
-            if(k == 'ArrowRight' || k == 'd'){
-                this.tetrisBlock.x = this.tetrisBlock.x + 30;
-                this.draw();
-            }
-            else if(k == 'ArrowLeft' || k == 'a'){
-                this.tetrisBlock.x = this.tetrisBlock.x - 30;
-                this.draw();
-            }
-            else if(k == 'ArrowDown' || k == 's'){
-                if(this.stopMoving == false){
-                    console.log(this.tetrisBlock.y);
-                    this.tetrisBlock.y = this.tetrisBlock.y + 30;
-                    this.draw();
-                }
-            }
-            else if(k == ' '){
-                this.deg = this.deg + 90;
-                let mainEvent = this.tetrisBlock.div.getBoundingClientRect();
-                let mainEventLeft = mainEvent.left;
-                console.log(mainEventLeft);
-                // let restXpos = mainEvent.left % 3;
-                // console.log(restXpos);
-                // this.tetrisBlock.x = this.tetrisBlock.x - restXpos;
-                this.draw();
-            }
+    public onKeyDown(k:string){
+        let xtarget = this.tetrisBlock.x;
+        let ytarget = this.tetrisBlock.y;
+
+        if(k == 'ArrowRight' || k == 'd'){
+            xtarget += 30;
+        }
+        else if(k == 'ArrowLeft' || k == 'a'){
+            xtarget -= 30;
+        }
+        else if(k == 'ArrowDown' || k == 's'){
+            ytarget += 30;
+        }
+
+        if(!Util.checkCollisionGrid(this.tetrisBlock, xtarget, ytarget)){
+            this.tetrisBlock.x = xtarget;
+            this.tetrisBlock.y = ytarget;
+        }
+
+        this.draw();
+
+        if(k == ' '){
+            this.deg = this.deg + 90;
+            let mainEvent = this.tetrisBlock.div.getBoundingClientRect();
+            let mainEventLeft = mainEvent.left;
+            let restXpos = mainEvent.left % 30;
+            // this.tetrisBlock.x = this.tetrisBlock.x - restXpos;
+            this.draw();
         }
     }
+
     private move(){
-        this.tetrisBlock.y = this.tetrisBlock.y + 30;
-        this.draw();
+        let ytarget = this.tetrisBlock.y;
+        ytarget += 30;
+
+        if(!Util.checkCollisionGrid(this.tetrisBlock, 0, ytarget)){
+            this.tetrisBlock.y = ytarget;
+            this.draw();
+        }
+        else{
+            this.stop();
+        }
 
     }
 

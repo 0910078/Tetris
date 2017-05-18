@@ -1,9 +1,9 @@
 class Game {
     private static instance:Game;
-    private tetrisBlock:tetrisBlock;
+    private tetrisBlock:TetrisBlock;
 
     constructor(){
-        this.tetrisBlock = new tetrisBlock();
+        this.tetrisBlock = new TetrisBlock();
         requestAnimationFrame(() => this.gameLoop());
     }
 
@@ -20,7 +20,7 @@ class Game {
     }
 
     public addNewTetrisBlock(){
-        this.tetrisBlock = new tetrisBlock();
+        this.tetrisBlock = new TetrisBlock();
     }
 
 }

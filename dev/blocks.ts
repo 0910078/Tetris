@@ -1,6 +1,9 @@
 ///<reference path="gameObject.ts"/>
 
 class Blocks extends GameObject{
+
+    private tb: TetrisBlock;
+
     constructor(c:string){
         super();
         this.height = 30;
