@@ -6,6 +6,7 @@ class tetrisBlock extends GameObject{
     private blocks:Array<Blocks>;
     private speed: number;
     private behavior: Behavior;
+    private timer: number;
 
     constructor(){
         super();
@@ -14,6 +15,7 @@ class tetrisBlock extends GameObject{
         this.speed = 2;
         this.y = 0;
         this.x = 0;
+        this.timer = 0;
         this.behavior = new Moving(this.speed, this);
 
         this.generateBlock();
@@ -40,8 +42,12 @@ class tetrisBlock extends GameObject{
     }
 
     public move(){
-        if(this.y < 540)
-            setInterval(this.behavior.update(), 5000);
+        this.timer = this.timer + 1;
+
+        if(this.timer > 50){
+            this.behavior.update();
+            this.timer = 0;
+        }
 
         if(this.y > 540) {
             this.behavior.stop();
@@ -52,6 +58,7 @@ class tetrisBlock extends GameObject{
     }
 
     private onKeyDown(e: KeyboardEvent): void{
+        console.log('move');
         this.behavior.onKeyDown(e.key);
         // console.log(this.y);
     }

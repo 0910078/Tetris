@@ -119,37 +119,41 @@ var Moving = (function () {
         this.stopMoving = false;
     }
     Moving.prototype.update = function () {
-        this.move();
+        if (!this.stopMoving) {
+            this.move();
+        }
     };
     Moving.prototype.stop = function () {
-        this.tetrisBlock.y = 500;
         this.stopMoving = true;
     };
     Moving.prototype.onKeyDown = function (k) {
-        if (k == 'ArrowRight' || k == 'd') {
-            this.tetrisBlock.x = this.tetrisBlock.x + 30;
-        }
-        else if (k == 'ArrowLeft' || k == 'a') {
-            this.tetrisBlock.x = this.tetrisBlock.x - 30;
-        }
-        else if (k == 'ArrowDown' || k == 's') {
-            if (this.stopMoving == false) {
-                console.log(this.tetrisBlock.y);
-                this.tetrisBlock.y = this.tetrisBlock.y + 30;
+        if (!this.stopMoving) {
+            if (k == 'ArrowRight' || k == 'd') {
+                this.tetrisBlock.x = this.tetrisBlock.x + 30;
+                this.draw();
             }
-        }
-        else if (k == ' ') {
-            this.deg = this.deg + 90;
-            var mainEvent = this.tetrisBlock.div.getBoundingClientRect();
-            var mainEventLeft = mainEvent.left;
-            console.log(mainEventLeft);
-            var restXpos = mainEvent.left % 3;
-            console.log(restXpos);
-            this.tetrisBlock.x = this.tetrisBlock.x - restXpos;
+            else if (k == 'ArrowLeft' || k == 'a') {
+                this.tetrisBlock.x = this.tetrisBlock.x - 30;
+                this.draw();
+            }
+            else if (k == 'ArrowDown' || k == 's') {
+                if (this.stopMoving == false) {
+                    console.log(this.tetrisBlock.y);
+                    this.tetrisBlock.y = this.tetrisBlock.y + 30;
+                    this.draw();
+                }
+            }
+            else if (k == ' ') {
+                this.deg = this.deg + 90;
+                var mainEvent = this.tetrisBlock.div.getBoundingClientRect();
+                var mainEventLeft = mainEvent.left;
+                console.log(mainEventLeft);
+                this.draw();
+            }
         }
     };
     Moving.prototype.move = function () {
-        this.tetrisBlock.y = this.tetrisBlock.y + 1;
+        this.tetrisBlock.y = this.tetrisBlock.y + 30;
         this.draw();
     };
     Moving.prototype.draw = function () {
@@ -167,6 +171,7 @@ var tetrisBlock = (function (_super) {
         _this.speed = 2;
         _this.y = 0;
         _this.x = 0;
+        _this.timer = 0;
         _this.behavior = new Moving(_this.speed, _this);
         _this.generateBlock();
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
@@ -187,8 +192,11 @@ var tetrisBlock = (function (_super) {
         grid.appendChild(this.div);
     };
     tetrisBlock.prototype.move = function () {
-        if (this.y < 540)
-            setInterval(this.behavior.update(), 5000);
+        this.timer = this.timer + 1;
+        if (this.timer > 50) {
+            this.behavior.update();
+            this.timer = 0;
+        }
         if (this.y > 540) {
             this.behavior.stop();
             var g = Game.getInstance();
@@ -196,6 +204,7 @@ var tetrisBlock = (function (_super) {
         }
     };
     tetrisBlock.prototype.onKeyDown = function (e) {
+        console.log('move');
         this.behavior.onKeyDown(e.key);
     };
     return tetrisBlock;
