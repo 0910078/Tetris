@@ -51,15 +51,3 @@ window.addEventListener("load", function(){
 });
 
 ```
-
-
-
-## Lezen
-- [Game Loop, Collision detection, Keyboard input](https://github.com/HR-CMGT/PRG04-Week3-examples)
-- [Inheritance in Typescript](https://www.typescriptlang.org/docs/handbook/classes.html)
-- [Interface in Typescript](https://www.typescriptlang.org/docs/handbook/interfaces.html)
-- [Typescript Getting Started](https://basarat.gitbooks.io/typescript/content/docs/getting-started.html)
-- [Arrow functions](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions)
-- [ES6 For In loops](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...in)
-- [ES6 For Of loops](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Statements/for...of)
-- [Class Code Naming Conventions](https://dev.to/mohitrajput987/coding-best-practices-part-1-naming-conventions--class-designing-principles)
