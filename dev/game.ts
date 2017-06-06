@@ -1,6 +1,9 @@
 class Game {
     private static instance:Game;
     private tetrisBlock:TetrisBlock;
+    // static weg
+    // Game.getInstance().tetrisBlocks;
+    public static tetrisBlocks : Array<TetrisBlock> = new Array<TetrisBlock>();
 
     constructor(){
         this.tetrisBlock = new TetrisBlock();
@@ -21,6 +24,11 @@ class Game {
 
     public addNewTetrisBlock(){
         this.tetrisBlock = new TetrisBlock();
+    }
+
+    public stopGame(){
+        console.log("Game OVER!");
+        requestAnimationFrame(() => false);
     }
 
 }

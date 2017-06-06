@@ -17,7 +17,7 @@ body * {
 
 container {
     background: lightblue;
-    width:700px;
+    width:300px;
     height:600px;
     left: 50%;
     top: 50%;
@@ -36,6 +36,7 @@ containerBlock{
     position: absolute;
     display: inline-block;
     transform: translate(0, 0);
+    border: 2px solid red;
 }
 
 

@@ -86,6 +86,13 @@ var Blocks = (function (_super) {
     }
     return Blocks;
 }(GameObject));
+var FakeObject = (function (_super) {
+    __extends(FakeObject, _super);
+    function FakeObject() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return FakeObject;
+}(GameObject));
 var Game = (function () {
     function Game() {
         var _this = this;
@@ -106,8 +113,13 @@ var Game = (function () {
     Game.prototype.addNewTetrisBlock = function () {
         this.tetrisBlock = new TetrisBlock();
     };
+    Game.prototype.stopGame = function () {
+        console.log("Game OVER!");
+        requestAnimationFrame(function () { return false; });
+    };
     return Game;
 }());
+Game.tetrisBlocks = new Array();
 window.addEventListener("load", function () {
     var g = Game.getInstance();
 });
@@ -125,45 +137,77 @@ var Moving = (function () {
         this.tetrisBlock.behavior = new StopMoving(this.tetrisBlock);
     };
     Moving.prototype.onKeyDown = function (k) {
-        var xtarget = this.tetrisBlock.x;
-        var ytarget = this.tetrisBlock.y;
+        var xtarget = 0;
+        var ytarget = 0;
         if (k == 'ArrowRight' || k == 'd') {
-            xtarget += 30;
+            xtarget = 30;
         }
         else if (k == 'ArrowLeft' || k == 'a') {
-            xtarget -= 30;
+            xtarget = -30;
         }
         else if (k == 'ArrowDown' || k == 's') {
-            ytarget += 30;
         }
-        if (!Util.checkCollisionGrid(this.tetrisBlock, xtarget, ytarget)) {
-            this.tetrisBlock.x = xtarget;
-            this.tetrisBlock.y = ytarget;
+        this.moveBlock(xtarget, ytarget);
+    };
+    Moving.prototype.moveBlock = function (xDirection, yDirection) {
+        var hit = false;
+        var targetObject = new FakeObject();
+        targetObject.x = this.tetrisBlock.x + xDirection;
+        targetObject.y = this.tetrisBlock.y + yDirection;
+        targetObject.height = this.tetrisBlock.height;
+        targetObject.width = this.tetrisBlock.width;
+        hit = (Util.checkCollisionGrid(targetObject));
+        console.log("grid is", hit);
+        for (var _i = 0, _a = Game.tetrisBlocks; _i < _a.length; _i++) {
+            var tetrisBlock = _a[_i];
+            if (Util.checkCollision(tetrisBlock, targetObject)) {
+                console.log(hit);
+                hit = true;
+            }
         }
-        this.draw();
-        if (k == ' ') {
-            this.deg = this.deg + 90;
-            var mainEvent = this.tetrisBlock.div.getBoundingClientRect();
-            var mainEventLeft = mainEvent.left;
-            var restXpos = mainEvent.left % 30;
-            this.draw();
+        console.log("hit other block: ", hit);
+        if (hit) {
+            if (xDirection > 0 || xDirection < 0) {
+                targetObject.x = this.tetrisBlock.x;
+            }
+            if (yDirection > 0) {
+                this.stop();
+                console.log("Y COST COLLISION");
+                targetObject.y = this.tetrisBlock.y;
+            }
         }
+        this.tetrisBlock.x = targetObject.x;
+        this.tetrisBlock.y = targetObject.y;
     };
     Moving.prototype.move = function () {
-        var ytarget = this.tetrisBlock.y;
-        ytarget += 30;
-        if (!Util.checkCollisionGrid(this.tetrisBlock, 0, ytarget)) {
-            this.tetrisBlock.y = ytarget;
-            this.draw();
-        }
-        else {
-            this.stop();
-        }
+        this.moveBlock(0, 30);
+        this.draw();
     };
     Moving.prototype.draw = function () {
         this.tetrisBlock.div.style.transform = "translate(" + this.tetrisBlock.x + "px, " + this.tetrisBlock.y + "px) rotate(" + this.deg + "deg)";
     };
     return Moving;
+}());
+var StopMoving = (function () {
+    function StopMoving(tb) {
+        this.tetrisBlock = tb;
+    }
+    StopMoving.prototype.update = function () {
+        var g = Game.getInstance();
+        if (this.tetrisBlock.y > 0) {
+            Game.tetrisBlocks.push(this.tetrisBlock);
+            g.addNewTetrisBlock();
+        }
+        else {
+            g.stopGame();
+        }
+    };
+    ;
+    StopMoving.prototype.stop = function () { };
+    ;
+    StopMoving.prototype.onKeyDown = function (e) { };
+    ;
+    return StopMoving;
 }());
 var TetrisBlock = (function (_super) {
     __extends(TetrisBlock, _super);
@@ -172,7 +216,7 @@ var TetrisBlock = (function (_super) {
         _this.randomBlock = ['red', 'green', 'yellow', 'lightBlue', 'blue', 'purple', 'orange'];
         _this.div = document.createElement('containerBlock');
         _this.blocks = new Array();
-        _this.speed = 2;
+        _this.speed = 10;
         _this.y = 0;
         _this.x = 0;
         _this.timer = 0;
@@ -183,12 +227,13 @@ var TetrisBlock = (function (_super) {
     }
     TetrisBlock.prototype.generateBlock = function () {
         var randomNum = Math.floor(Math.random() * 7);
-        var blockColor = this.randomBlock[randomNum];
+        var blockColor = this.randomBlock[2];
         this.setsPropertyTetrisBlock(blockColor);
         this.div.className = 'container_' + blockColor;
         for (var i = 0; i < 4; i++) {
             this.blocks.push(new Blocks(blockColor));
         }
+        this.setsPropertyBlocks(blockColor);
         for (var _i = 0, _a = this.blocks; _i < _a.length; _i++) {
             var block = _a[_i];
             this.div.appendChild(block.div);
@@ -197,7 +242,7 @@ var TetrisBlock = (function (_super) {
         grid.appendChild(this.div);
     };
     TetrisBlock.prototype.move = function () {
-        this.timer = this.timer + 1;
+        this.timer = this.timer + 3;
         if (this.timer > 60) {
             this.behavior.update();
             this.timer = 0;
@@ -220,36 +265,92 @@ var TetrisBlock = (function (_super) {
             this.height = 60;
         }
     };
+    TetrisBlock.prototype.setsPropertyBlocks = function (c) {
+        if (c == 'yellow') {
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+            this.blocks[0].x = 30;
+            this.blocks[1].x = 30;
+            this.blocks[2].x = 60;
+            this.blocks[3].x = 60;
+        }
+        else if (c == 'red') {
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+            this.blocks[0].x = 30;
+            this.blocks[1].x = 60;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if (c == 'green') {
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if (c == 'lightBlue') {
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 30;
+            this.blocks[3].y = 60;
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if (c == 'blue') {
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if (c == 'orange') {
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if (c == 'purple') {
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+    };
     return TetrisBlock;
 }(GameObject));
 var Util = (function () {
     function Util() {
     }
-    Util.checkCollision = function (g1, g2) {
-        return (g1.x < g2.x + g2.width &&
-            g1.x + g1.width > g2.x &&
-            g1.y < g2.y + g2.height &&
-            g1.height + g1.y > g2.y);
+    Util.checkCollision = function (go1, go2) {
+        return (go1.x < go2.x + go2.width &&
+            go1.x + go1.width > go2.x &&
+            go1.y < go2.y + go2.height &&
+            go1.height + go1.y > go2.y);
     };
-    Util.checkCollisionGrid = function (g1, xt, yt) {
-        console.log(xt + g1.width);
-        return (g1.x + xt < 0 || (xt + g1.width) > 300 || yt + g1.height > 600);
+    Util.checkCollisionGrid = function (g1) {
+        return (g1.x < 0 || (g1.x + g1.width) > 300 || g1.y + g1.height > 600);
     };
     return Util;
-}());
-var StopMoving = (function () {
-    function StopMoving(tb) {
-        this.tetrisBlock = tb;
-    }
-    StopMoving.prototype.update = function () {
-        var g = Game.getInstance();
-        g.addNewTetrisBlock();
-    };
-    ;
-    StopMoving.prototype.stop = function () { };
-    ;
-    StopMoving.prototype.onKeyDown = function (e) { };
-    ;
-    return StopMoving;
 }());
 //# sourceMappingURL=main.js.map

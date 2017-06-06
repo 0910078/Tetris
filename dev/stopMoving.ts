@@ -7,7 +7,14 @@ class StopMoving implements Behavior{
 
     update(){
         let g: Game = Game.getInstance();
-        g.addNewTetrisBlock()
+        if(this.tetrisBlock.y > 0){
+            Game.tetrisBlocks.push(this.tetrisBlock);
+            g.addNewTetrisBlock();
+        }
+        else{
+            g.stopGame();
+        }
+
     };
 
     stop(){};

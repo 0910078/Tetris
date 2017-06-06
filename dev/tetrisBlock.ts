@@ -3,7 +3,7 @@
 class TetrisBlock extends GameObject{
 
     private randomBlock:Array<string> = ['red', 'green', 'yellow', 'lightBlue', 'blue', 'purple', 'orange'];
-    private blocks:Array<Blocks>;
+    public blocks:Array<Blocks>;
     private speed: number;
     public behavior: Behavior;
     private timer: number;
@@ -12,7 +12,7 @@ class TetrisBlock extends GameObject{
         super();
         this.div = document.createElement('containerBlock');
         this.blocks = new Array<Blocks>();
-        this.speed = 2;
+        this.speed = 10;
         this.y = 0;
         this.x = 0;
         this.timer = 0;
@@ -25,7 +25,7 @@ class TetrisBlock extends GameObject{
     private generateBlock(){
 
         let randomNum = Math.floor(Math.random() * 7);
-        let blockColor = this.randomBlock[randomNum];
+        let blockColor = this.randomBlock[2];
 
         this.setsPropertyTetrisBlock(blockColor);
 
@@ -34,6 +34,8 @@ class TetrisBlock extends GameObject{
         for(let i = 0; i < 4; i++){
             this.blocks.push(new Blocks(blockColor));
         }
+        
+        this.setsPropertyBlocks(blockColor);
 
         for(let block of this.blocks){
             this.div.appendChild(block.div);
@@ -41,10 +43,11 @@ class TetrisBlock extends GameObject{
 
         let grid = document.getElementById('grid');
         grid.appendChild(this.div);
+
     }
 
     public move(){
-        this.timer = this.timer + 1;
+        this.timer = this.timer + 3;
 
         if(this.timer > 60){
             this.behavior.update();
@@ -69,6 +72,86 @@ class TetrisBlock extends GameObject{
         else{
             this.width = 90;
             this.height = 60;
+        }
+    }
+    
+    private setsPropertyBlocks(c:string){
+        if(c == 'yellow'){
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+
+            this.blocks[0].x = 30;
+            this.blocks[1].x = 30;
+            this.blocks[2].x = 60;
+            this.blocks[3].x = 60;
+        }
+        else if(c == 'red'){
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+
+            this.blocks[0].x = 30;
+            this.blocks[1].x = 60;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if(c == 'green'){
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if(c == 'lightBlue'){
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 30;
+            this.blocks[3].y = 60;
+
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if(c == 'blue'){
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if(c == 'orange'){
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
+        }
+        else if(c == 'purple'){
+            this.blocks[0].y = 0;
+            this.blocks[1].y = 0;
+            this.blocks[2].y = 0;
+            this.blocks[3].y = 0;
+
+            this.blocks[0].x = 0;
+            this.blocks[1].x = 0;
+            this.blocks[2].x = 30;
+            this.blocks[3].x = 30;
         }
     }
 

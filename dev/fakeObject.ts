@@ -1,0 +1,3 @@
+class FakeObject extends GameObject{
+
+}
