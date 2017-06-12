@@ -51,16 +51,6 @@ var GameObject = (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(GameObject.prototype, "blockColor", {
-        get: function () {
-            return this._blockColor;
-        },
-        set: function (v) {
-            this._blockColor = v;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(GameObject.prototype, "div", {
         get: function () {
             return this._div;
@@ -73,284 +63,395 @@ var GameObject = (function () {
     });
     return GameObject;
 }());
-var Blocks = (function (_super) {
-    __extends(Blocks, _super);
-    function Blocks(c) {
+var Empeleon = (function (_super) {
+    __extends(Empeleon, _super);
+    function Empeleon(g) {
         var _this = _super.call(this) || this;
-        _this.height = 30;
-        _this.width = 30;
-        _this.blockColor = c;
-        _this.div = document.createElement('block');
-        _this.div.className = _this.blockColor;
+        _this.timer = 0;
+        _this.behavior = new Moving(_this);
+        _this.setsPropertiesBlock(g);
+        window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         return _this;
     }
-    return Blocks;
+    Empeleon.prototype.setsPropertiesBlock = function (game) {
+        this.y = 0;
+        this.x = 270;
+        this.width = 120;
+        this.height = 120;
+        this.div = document.createElement('containerBlock');
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.div.className = 'container_empeleon';
+        var grid = document.getElementById('grid');
+        grid.appendChild(this.div);
+        game.subscribe(this);
+    };
+    Empeleon.prototype.move = function () {
+        this.timer = this.timer + 5;
+        if (this.timer > 60) {
+            this.behavior.update();
+            this.timer = 0;
+        }
+    };
+    Empeleon.prototype.onKeyDown = function (e) {
+        this.behavior.onKeyDown(e.keyCode);
+    };
+    Empeleon.prototype.setsStylingInPokedex = function () {
+        var pokedexInfo = document.getElementById('pokemonName');
+        var pokedexImage = document.getElementById('pokemonGif');
+        pokedexImage.className = "empoleon";
+        pokedexImage.style.width = "60px";
+        pokedexImage.style.height = "60px";
+        pokedexImage.style.top = "70%";
+        pokedexInfo.innerText = "Empoleon";
+    };
+    return Empeleon;
 }(GameObject));
+var FakeGameObject = (function () {
+    function FakeGameObject() {
+    }
+    Object.defineProperty(FakeGameObject.prototype, "height", {
+        get: function () {
+            return this._height;
+        },
+        set: function (v) {
+            this._height = v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FakeGameObject.prototype, "width", {
+        get: function () {
+            return this._width;
+        },
+        set: function (v) {
+            this._width = v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FakeGameObject.prototype, "x", {
+        get: function () {
+            return this._x;
+        },
+        set: function (v) {
+            this._x = v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FakeGameObject.prototype, "y", {
+        get: function () {
+            return this._y;
+        },
+        set: function (v) {
+            this._y = v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FakeGameObject.prototype, "div", {
+        get: function () {
+            return this._div;
+        },
+        set: function (v) {
+            this._div = v;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return FakeGameObject;
+}());
 var FakeObject = (function (_super) {
     __extends(FakeObject, _super);
     function FakeObject() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     return FakeObject;
-}(GameObject));
+}(FakeGameObject));
 var Game = (function () {
     function Game() {
         var _this = this;
-        this.tetrisBlock = new TetrisBlock();
+        this.score = 0;
+        this.gameOver = false;
+        this.pokemonBlocks = new Array();
+        this.observers = new Array();
+        this.addNewPokemonBlock();
+        this.scoreBoard(this.score);
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
-        this.tetrisBlock.move();
-        requestAnimationFrame(function () { return _this.gameLoop(); });
+        this.pokemonBlock.move();
+        for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
+            var o = _a[_i];
+            o.setsStylingInPokedex();
+        }
+        if (!this.gameOver) {
+            requestAnimationFrame(function () { return _this.gameLoop(); });
+        }
     };
     Game.getInstance = function () {
         if (!Game.instance) {
             Game.instance = new Game();
+            console.log("New Game: ", Game.instance);
+        }
+        else {
+            console.log('HAVE GAME');
         }
         return Game.instance;
     };
-    Game.prototype.addNewTetrisBlock = function () {
-        this.tetrisBlock = new TetrisBlock();
+    Game.prototype.addNewPokemonBlock = function () {
+        var randomNum = Math.floor(Math.random() * 3);
+        switch (randomNum) {
+            case 0:
+                this.pokemonBlock = new Piplup(this);
+                break;
+            case 1:
+                this.pokemonBlock = new Prinplup(this);
+                break;
+            case 2:
+                this.pokemonBlock = new Empeleon(this);
+                break;
+        }
     };
     Game.prototype.stopGame = function () {
-        console.log("Game OVER!");
-        requestAnimationFrame(function () { return false; });
+        this.gameOver = true;
     };
+    Game.prototype.scoreBoard = function (score) {
+        this.score += score;
+        document.getElementById("score").innerHTML = "" + this.score;
+    };
+    Game.prototype.subscribe = function (o) {
+        this.observers.push(o);
+    };
+    ;
+    Game.prototype.unsubscribe = function () {
+        this.observers.splice(0);
+    };
+    ;
     return Game;
 }());
-Game.tetrisBlocks = new Array();
 window.addEventListener("load", function () {
-    var g = Game.getInstance();
+    var game = Game.getInstance();
 });
+var Keys;
+(function (Keys) {
+    Keys[Keys["RIGHT"] = 39] = "RIGHT";
+    Keys[Keys["LEFT"] = 37] = "LEFT";
+    Keys[Keys["A"] = 65] = "A";
+    Keys[Keys["D"] = 68] = "D";
+})(Keys || (Keys = {}));
 var Moving = (function () {
-    function Moving(s, t) {
-        this.speed = s;
-        this.tetrisBlock = t;
+    function Moving(t) {
+        this.pokemonBlock = t;
         this.deg = 0;
         this.stopMoving = false;
     }
     Moving.prototype.update = function () {
         this.move();
     };
-    Moving.prototype.stop = function () {
-        this.tetrisBlock.behavior = new StopMoving(this.tetrisBlock);
+    Moving.prototype.stopCurrentPokemonBlock = function () {
+        this.pokemonBlock.behavior = new StopMoving(this.pokemonBlock);
     };
     Moving.prototype.onKeyDown = function (k) {
         var xtarget = 0;
         var ytarget = 0;
-        if (k == 'ArrowRight' || k == 'd') {
+        if (k == Keys.RIGHT || k == Keys.D) {
             xtarget = 30;
         }
-        else if (k == 'ArrowLeft' || k == 'a') {
+        else if (k == Keys.LEFT || k == Keys.A) {
             xtarget = -30;
         }
-        else if (k == 'ArrowDown' || k == 's') {
-        }
         this.moveBlock(xtarget, ytarget);
-    };
-    Moving.prototype.moveBlock = function (xDirection, yDirection) {
-        var hit = false;
-        var targetObject = new FakeObject();
-        targetObject.x = this.tetrisBlock.x + xDirection;
-        targetObject.y = this.tetrisBlock.y + yDirection;
-        targetObject.height = this.tetrisBlock.height;
-        targetObject.width = this.tetrisBlock.width;
-        hit = (Util.checkCollisionGrid(targetObject));
-        console.log("grid is", hit);
-        for (var _i = 0, _a = Game.tetrisBlocks; _i < _a.length; _i++) {
-            var tetrisBlock = _a[_i];
-            if (Util.checkCollision(tetrisBlock, targetObject)) {
-                console.log(hit);
-                hit = true;
-            }
-        }
-        console.log("hit other block: ", hit);
-        if (hit) {
-            if (xDirection > 0 || xDirection < 0) {
-                targetObject.x = this.tetrisBlock.x;
-            }
-            if (yDirection > 0) {
-                this.stop();
-                console.log("Y COST COLLISION");
-                targetObject.y = this.tetrisBlock.y;
-            }
-        }
-        this.tetrisBlock.x = targetObject.x;
-        this.tetrisBlock.y = targetObject.y;
     };
     Moving.prototype.move = function () {
         this.moveBlock(0, 30);
         this.draw();
     };
     Moving.prototype.draw = function () {
-        this.tetrisBlock.div.style.transform = "translate(" + this.tetrisBlock.x + "px, " + this.tetrisBlock.y + "px) rotate(" + this.deg + "deg)";
+        this.pokemonBlock.div.style.transform = "translate(" + this.pokemonBlock.x + "px, " + this.pokemonBlock.y + "px) rotate(" + this.deg + "deg)";
+    };
+    Moving.prototype.moveBlock = function (xDirection, yDirection) {
+        var hit = false;
+        var game = Game.instance;
+        var targetObject = new FakeObject();
+        this.setsPropertiesFakeObject(targetObject, xDirection, yDirection);
+        if (Util.CollisionGrid.checkCollision(targetObject)) {
+            hit = true;
+            this.checkHitDetectionOnPokemonBlock(hit, xDirection, yDirection, targetObject);
+        }
+        for (var _i = 0, _a = game.pokemonBlocks; _i < _a.length; _i++) {
+            var pokemonBlock = _a[_i];
+            if (Util.CollisionPokemonBlock.checkCollision(pokemonBlock, targetObject)) {
+                hit = true;
+                this.checkHitDetectionOnPokemonBlock(hit, xDirection, yDirection, targetObject);
+            }
+        }
+        this.pokemonBlock.x = targetObject.x;
+        this.pokemonBlock.y = targetObject.y;
+    };
+    Moving.prototype.setsPropertiesFakeObject = function (targetObject, xDirection, yDirection) {
+        targetObject.x = this.pokemonBlock.x + xDirection;
+        targetObject.y = this.pokemonBlock.y + yDirection;
+        targetObject.height = this.pokemonBlock.height;
+        targetObject.width = this.pokemonBlock.width;
+    };
+    Moving.prototype.checkHitDetectionOnPokemonBlock = function (hit, xDirection, yDirection, targetObject) {
+        console.log("checkHITS");
+        if (hit) {
+            if (xDirection > 0 || xDirection < 0) {
+                targetObject.x = this.pokemonBlock.x;
+            }
+            if (yDirection > 0) {
+                targetObject.y = this.pokemonBlock.y;
+                this.stopCurrentPokemonBlock();
+            }
+        }
     };
     return Moving;
 }());
-var StopMoving = (function () {
-    function StopMoving(tb) {
-        this.tetrisBlock = tb;
-    }
-    StopMoving.prototype.update = function () {
-        var g = Game.getInstance();
-        if (this.tetrisBlock.y > 0) {
-            Game.tetrisBlocks.push(this.tetrisBlock);
-            g.addNewTetrisBlock();
-        }
-        else {
-            g.stopGame();
-        }
-    };
-    ;
-    StopMoving.prototype.stop = function () { };
-    ;
-    StopMoving.prototype.onKeyDown = function (e) { };
-    ;
-    return StopMoving;
-}());
-var TetrisBlock = (function (_super) {
-    __extends(TetrisBlock, _super);
-    function TetrisBlock() {
+var Piplup = (function (_super) {
+    __extends(Piplup, _super);
+    function Piplup(g) {
         var _this = _super.call(this) || this;
-        _this.randomBlock = ['red', 'green', 'yellow', 'lightBlue', 'blue', 'purple', 'orange'];
-        _this.div = document.createElement('containerBlock');
-        _this.blocks = new Array();
-        _this.speed = 10;
-        _this.y = 0;
-        _this.x = 0;
         _this.timer = 0;
-        _this.behavior = new Moving(_this.speed, _this);
-        _this.generateBlock();
+        _this.behavior = new Moving(_this);
+        _this.setsPropertiesBlock(g);
         window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         return _this;
     }
-    TetrisBlock.prototype.generateBlock = function () {
-        var randomNum = Math.floor(Math.random() * 7);
-        var blockColor = this.randomBlock[2];
-        this.setsPropertyTetrisBlock(blockColor);
-        this.div.className = 'container_' + blockColor;
-        for (var i = 0; i < 4; i++) {
-            this.blocks.push(new Blocks(blockColor));
-        }
-        this.setsPropertyBlocks(blockColor);
-        for (var _i = 0, _a = this.blocks; _i < _a.length; _i++) {
-            var block = _a[_i];
-            this.div.appendChild(block.div);
-        }
+    Piplup.prototype.setsPropertiesBlock = function (game) {
+        this.y = 0;
+        this.x = 270;
+        this.width = 60;
+        this.height = 60;
+        this.div = document.createElement('containerBlock');
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.div.className = 'container_piplup';
         var grid = document.getElementById('grid');
         grid.appendChild(this.div);
+        game.subscribe(this);
     };
-    TetrisBlock.prototype.move = function () {
-        this.timer = this.timer + 3;
+    Piplup.prototype.move = function () {
+        this.timer = this.timer + 5;
         if (this.timer > 60) {
             this.behavior.update();
             this.timer = 0;
         }
     };
-    TetrisBlock.prototype.onKeyDown = function (e) {
-        this.behavior.onKeyDown(e.key);
+    Piplup.prototype.onKeyDown = function (e) {
+        this.behavior.onKeyDown(e.keyCode);
     };
-    TetrisBlock.prototype.setsPropertyTetrisBlock = function (c) {
-        if (c == 'yellow') {
-            this.width = 60;
-            this.height = 60;
+    Piplup.prototype.setsStylingInPokedex = function () {
+        console.log('setsPokedex');
+        var pokedexInfo = document.getElementById('pokemonName');
+        var pokedexImage = document.getElementById('pokemonGif');
+        pokedexImage.className = "piplup";
+        pokedexImage.style.width = "30px";
+        pokedexImage.style.height = "41px";
+        pokedexInfo.innerText = "Piplup";
+    };
+    return Piplup;
+}(GameObject));
+var Prinplup = (function (_super) {
+    __extends(Prinplup, _super);
+    function Prinplup(g) {
+        var _this = _super.call(this) || this;
+        _this.timer = 0;
+        _this.behavior = new Moving(_this);
+        _this.setsPropertiesBlock(g);
+        window.addEventListener("keydown", function (e) { return _this.onKeyDown(e); });
+        return _this;
+    }
+    Prinplup.prototype.setsPropertiesBlock = function (game) {
+        this.y = 0;
+        this.x = 270;
+        this.width = 60;
+        this.height = 120;
+        this.div = document.createElement('containerBlock');
+        this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+        this.div.className = 'container_prinplup';
+        var grid = document.getElementById('grid');
+        grid.appendChild(this.div);
+        game.subscribe(this);
+    };
+    Prinplup.prototype.move = function () {
+        this.timer = this.timer + 5;
+        if (this.timer > 60) {
+            this.behavior.update();
+            this.timer = 0;
         }
-        else if (c == 'lightBlue') {
-            this.width = 30;
-            this.height = 120;
+    };
+    Prinplup.prototype.onKeyDown = function (e) {
+        this.behavior.onKeyDown(e.keyCode);
+    };
+    Prinplup.prototype.setsStylingInPokedex = function () {
+        var pokedexInfo = document.getElementById('pokemonName');
+        var pokedexImage = document.getElementById('pokemonGif');
+        pokedexImage.className = "prinplup";
+        pokedexImage.style.width = "50px";
+        pokedexImage.style.height = "50px";
+        pokedexInfo.innerText = "Prinplup";
+    };
+    return Prinplup;
+}(GameObject));
+var StopMoving = (function () {
+    function StopMoving(tb) {
+        this.game = Game.instance;
+        this.className = tb.div.className;
+        this.pokemonBlock = tb;
+    }
+    StopMoving.prototype.update = function () {
+        if (this.pokemonBlock.y > 0) {
+            this.addScore();
+            this.game.pokemonBlocks.push(this.pokemonBlock);
+            this.game.addNewPokemonBlock();
         }
         else {
-            this.width = 90;
-            this.height = 60;
+            this.game.unsubscribe();
+            this.game.stopGame();
         }
     };
-    TetrisBlock.prototype.setsPropertyBlocks = function (c) {
-        if (c == 'yellow') {
-            this.blocks[0].y = 0;
-            this.blocks[1].y = 0;
-            this.blocks[2].y = 0;
-            this.blocks[3].y = 0;
-            this.blocks[0].x = 30;
-            this.blocks[1].x = 30;
-            this.blocks[2].x = 60;
-            this.blocks[3].x = 60;
+    ;
+    StopMoving.prototype.addScore = function () {
+        if (this.className == 'container_piplup') {
+            this.game.scoreBoard(10);
         }
-        else if (c == 'red') {
-            this.blocks[0].y = 0;
-            this.blocks[1].y = 0;
-            this.blocks[2].y = 0;
-            this.blocks[3].y = 0;
-            this.blocks[0].x = 30;
-            this.blocks[1].x = 60;
-            this.blocks[2].x = 30;
-            this.blocks[3].x = 30;
+        else if (this.className == 'container_prinplup') {
+            this.game.scoreBoard(20);
         }
-        else if (c == 'green') {
-            this.blocks[0].y = 0;
-            this.blocks[1].y = 0;
-            this.blocks[2].y = 0;
-            this.blocks[3].y = 0;
-            this.blocks[0].x = 0;
-            this.blocks[1].x = 0;
-            this.blocks[2].x = 30;
-            this.blocks[3].x = 30;
-        }
-        else if (c == 'lightBlue') {
-            this.blocks[0].y = 0;
-            this.blocks[1].y = 0;
-            this.blocks[2].y = 30;
-            this.blocks[3].y = 60;
-            this.blocks[0].x = 0;
-            this.blocks[1].x = 0;
-            this.blocks[2].x = 30;
-            this.blocks[3].x = 30;
-        }
-        else if (c == 'blue') {
-            this.blocks[0].y = 0;
-            this.blocks[1].y = 0;
-            this.blocks[2].y = 0;
-            this.blocks[3].y = 0;
-            this.blocks[0].x = 0;
-            this.blocks[1].x = 0;
-            this.blocks[2].x = 30;
-            this.blocks[3].x = 30;
-        }
-        else if (c == 'orange') {
-            this.blocks[0].y = 0;
-            this.blocks[1].y = 0;
-            this.blocks[2].y = 0;
-            this.blocks[3].y = 0;
-            this.blocks[0].x = 0;
-            this.blocks[1].x = 0;
-            this.blocks[2].x = 30;
-            this.blocks[3].x = 30;
-        }
-        else if (c == 'purple') {
-            this.blocks[0].y = 0;
-            this.blocks[1].y = 0;
-            this.blocks[2].y = 0;
-            this.blocks[3].y = 0;
-            this.blocks[0].x = 0;
-            this.blocks[1].x = 0;
-            this.blocks[2].x = 30;
-            this.blocks[3].x = 30;
+        else {
+            this.game.scoreBoard(40);
         }
     };
-    return TetrisBlock;
-}(GameObject));
-var Util = (function () {
-    function Util() {
-    }
-    Util.checkCollision = function (go1, go2) {
-        return (go1.x < go2.x + go2.width &&
-            go1.x + go1.width > go2.x &&
-            go1.y < go2.y + go2.height &&
-            go1.height + go1.y > go2.y);
-    };
-    Util.checkCollisionGrid = function (g1) {
-        return (g1.x < 0 || (g1.x + g1.width) > 300 || g1.y + g1.height > 600);
-    };
-    return Util;
+    StopMoving.prototype.onKeyDown = function (e) { };
+    ;
+    return StopMoving;
 }());
+var Util;
+(function (Util) {
+    var CollisionPokemonBlock = (function () {
+        function CollisionPokemonBlock() {
+        }
+        CollisionPokemonBlock.checkCollision = function (go1, go2) {
+            console.log("CHECKPKMNHITS");
+            return (go1.x < go2.x + go2.width &&
+                go1.x + go1.width > go2.x &&
+                go1.y < go2.y + go2.height &&
+                go1.height + go1.y > go2.y);
+        };
+        return CollisionPokemonBlock;
+    }());
+    Util.CollisionPokemonBlock = CollisionPokemonBlock;
+    var CollisionGrid = (function () {
+        function CollisionGrid() {
+        }
+        CollisionGrid.checkCollision = function (g1) {
+            console.log(g1.x < 0 || (g1.x + g1.width) > 600 || g1.y + g1.height > 600);
+            return (g1.x < 0 || (g1.x + g1.width) > 600 || g1.y + g1.height > 600);
+        };
+        return CollisionGrid;
+    }());
+    Util.CollisionGrid = CollisionGrid;
+})(Util || (Util = {}));
 //# sourceMappingURL=main.js.map

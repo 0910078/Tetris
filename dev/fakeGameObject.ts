@@ -1,4 +1,4 @@
-abstract class GameObject{
+abstract class FakeGameObject{
     protected _div:HTMLElement;
     protected _height:number;
     protected _width:number;
@@ -46,8 +46,4 @@ abstract class GameObject{
     public set div(v: HTMLElement) {
         this._div = v;
     }
-
-    public behavior:Behavior;
-
-    public abstract move();
 }

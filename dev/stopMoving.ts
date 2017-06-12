@@ -1,22 +1,36 @@
 class StopMoving implements Behavior{
-    private tetrisBlock : TetrisBlock;
+    private pokemonBlock : GameObject;
+    private className: string;
+    private game:Game = Game.instance;
 
-    constructor(tb: TetrisBlock){
-        this.tetrisBlock = tb;
+    constructor(tb: GameObject) {
+        this.className = tb.div.className;
+        this.pokemonBlock = tb;
     }
 
     update(){
-        let g: Game = Game.getInstance();
-        if(this.tetrisBlock.y > 0){
-            Game.tetrisBlocks.push(this.tetrisBlock);
-            g.addNewTetrisBlock();
+        if(this.pokemonBlock.y > 0){
+            this.addScore();
+            this.game.pokemonBlocks.push(this.pokemonBlock);
+            this.game.addNewPokemonBlock();
         }
         else{
-            g.stopGame();
+            this.game.unsubscribe();
+            this.game.stopGame();
         }
-
     };
 
-    stop(){};
-    onKeyDown(e:string){};
+    private addScore(){
+        if(this.className == 'container_piplup'){
+            this.game.scoreBoard(10);
+        }
+        else if(this.className == 'container_prinplup'){
+            this.game.scoreBoard(20);
+        }
+        else{
+            this.game.scoreBoard(40);
+        }
+    }
+
+    onKeyDown(e:number){};
 }

@@ -1,3 +1,5 @@
-class FakeObject extends GameObject{
+///<reference path="fakeGameObject.ts"/>
+
+class FakeObject extends FakeGameObject{
 
 }

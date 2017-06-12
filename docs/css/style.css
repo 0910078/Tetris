@@ -1,5 +1,15 @@
+@font-face {
+    font-family: pixel;
+    src: url(../font/slkscr.ttf);
+}
+
+html, body, background{
+    width: 100%;
+    height: 100%;
+}
+
 body {
-    background-color: #666;
+    background-repeat: no-repeat;
     font-family: Arial, Helvetica, sans-serif;
     overflow:hidden;
     margin:0px; padding:0px;
@@ -12,12 +22,50 @@ body * {
     margin:0px;
     padding:0px;
     box-sizing: border-box;
-    background-repeat: no-repeat;
+}
+
+sea{
+    width:100%;
+    height: 50%;
+    background: url("../images/water.gif");
+    position: absolute;
+    bottom:0;
+}
+
+sky {
+    width:100%;
+    height: 50%;
+    top:0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#60aff4+0,cef3ff+51 */
+    background: #60aff4; /* Old browsers */
+    background: -moz-linear-gradient(top, #60aff4 0%, #cef3ff 51%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #60aff4 0%,#cef3ff 51%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #60aff4 0%,#cef3ff 51%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#60aff4', endColorstr='#cef3ff',GradientType=0 ); /* IE6-9 */
+}
+
+cloud{
+    width: 156px;
+    height:89px;
+    background: url("../images/cloud.png");
+}
+
+wingull{
+    width:143px;
+    height:24px;
+    background: url("../images/wingull.gif");
+    transform: translate(1360px, 60px);
+}
+
+pelipper{
+    width:101px;
+    height:92px;
+    background: url("../images/pelipper.gif");
+    transform: translate(1340px, 180px);
 }
 
 container {
-    background: lightblue;
-    width:300px;
+    width: 960px;
     height:600px;
     left: 50%;
     top: 50%;
@@ -26,130 +74,112 @@ container {
 }
 
 grid{
-    background: url('../images/grid.png');
+    background: url('../images/grid2.png');
     height: 600px;
-    width:300px;
+    width: 600px;
     position: relative;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%,-50%);
+}
+
+score{
+    left: 13%;
+    top: 45%;
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    background: url("../images/pokedex.png");
+    -webkit-background-size:100%;
+    background-size:100%;
+    width: 250px;
+    height: 250px;
+}
+
+h2#pokemonName {
+    transform: translate(-50%, -50%) rotateY(180deg);
+    font-size: 12px;
+    top: 27%;
+}
+
+pokedex{
+    left: 87%;
+    top: 45%;
+    width: 250px;
+    z-index: 0;
+    transform: translate(-50%, -50%) rotateY(180deg);
+    background: url("../images/pokedex.png");
+    height: 250px;
+    background-size: 100%;
+}
+
+#score, score h2, pokedex h2, pokedex span{
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+}
+
+#score, score h2, pokedex h2{
+    color: #3b79a8;
+    font-family: pixel;
+}
+
+score h2{
+    top: 27%;
+    font-size: 20px;
+}
+
+#score{
+    top: 70%;
+    font-size: 26px;
+}
+
+#pokemonGif{
+    width: 30px;
+    height: 41px;
+    background-repeat: no-repeat;
+    top: 170px;
+    transform: translate(-50%, -50%) rotateY(180deg);
+}
+
+pokedex .piplup{
+    background :url('../images/piplup.gif ');
+    background-size: 100%;
+}
+
+pokedex .prinplup{
+    background: url('../images/prinplup.gif ');
+    background-size: 100%;
+}
+
+pokedex .empoleon{
+    background :url('../images/empoleon.gif ');
+    background-size: 100%;
 }
 
 containerBlock{
     position: absolute;
     display: inline-block;
     transform: translate(0, 0);
-    border: 2px solid red;
 }
 
 
-containerBlock.container_yellow{
+containerBlock.container_piplup{
     height: 60px;
     width: 60px;
+    background: url("../images/piplup.png");
 }
 
 
-containerBlock.container_lightBlue{
-    width:30px;
+containerBlock.container_prinplup{
+    width:60px;
     height:120px;
+    background: url("../images/prinplup.png");
 }
 
-containerBlock.container_red,
-containerBlock.container_green,
-containerBlock.container_purple,
-containerBlock.container_blue,
-containerBlock.container_orange{
-    width: 90px;
-    height:60px;
-}
 
-containerBlock block.red:first-child,
-containerBlock block.yellow:first-child,
-containerBlock block.purple:first-child,
-containerBlock block.blue:first-child,
-containerBlock block.lightBlue:first-child{
-    top:0;
-    left:0;
-}
-
-containerBlock block.red:nth-child(2),
-containerBlock block.green:nth-child(2),
-containerBlock block.purple:nth-child(2){
-    top:0;
-    left:30px;
-}
-
-containerBlock block.red:nth-child(3),
-containerBlock block.green:nth-child(3),
-containerBlock block.blue:nth-child(3),
-containerBlock block.orange:nth-child(3),
-containerBlock block.purple:last-child{
-    top:30px;
-    left:30px;
-}
-
-containerBlock block.red:last-child,
-containerBlock block.blue:last-child,
-containerBlock block.orange:nth-child(2),
-containerBlock block.yellow:last-child{
-    bottom:0px;
-    right:0px;
-}
-
-containerBlock block.green:first-child,
-containerBlock block.orange:first-child,
-containerBlock block.yellow:nth-child(2),
-containerBlock block.purple:nth-child(3){
-    top:0;
-    right:0;
-}
-
-containerBlock block.lightBlue:nth-child(2),
-containerBlock block.blue:nth-child(2){
-    top:30px;
-    left:0;
-}
-
-containerBlock block.lightBlue:nth-child(3){
-    top:60px;
-    left:0;
-}
-
-containerBlock block.green:last-child,
-containerBlock block.lightBlue:last-child,
-containerBlock block.orange:last-child,
-containerBlock block.yellow:nth-child(3){
-    bottom:0;
-    left:0;
-}
-
-block{
-    position: absolute;
-    width:30px;
-    height:30px;
-}
-
-block.red{
-    background: #f0524f;
-}
-
-block.green{
-    background: #61ee56;
-}
-
-block.yellow{
-    background: #eee939;
-}
-
-block.purple{
-    background: #b143ee;
-}
-
-block.lightBlue{
-    background: #6adbee;
-}
-
-block.blue{
-    background: #4649ee;
-}
-
-block.orange{
-    background: #ee8c3f;
+containerBlock.container_empeleon{
+    width:120px;
+    height:120px;
+    background: url("../images/empeleon.png");
 }

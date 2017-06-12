@@ -1,5 +1,4 @@
 interface Behavior {
     update();
-    stop();
-    onKeyDown(e:string);
+    onKeyDown(e:number);
 }
