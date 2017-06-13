@@ -25,9 +25,6 @@ body * {
 }
 
 .center{
-    left:50%;
-    top: 40%;
-    transform: translate(-50%, -50%);
     height: 500px;
     width: 500px;
     background: rgb(61, 61, 61);

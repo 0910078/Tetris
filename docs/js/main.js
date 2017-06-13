@@ -176,14 +176,12 @@ var Game = (function () {
         this.pokemonBlocks = new Array();
         this.observers = new Array();
         this.addNewPokemonBlock();
-        this.magikarpsBackground();
         this.scoreBoard(this.score);
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.pokemonBlock.move();
-        this.magikarpsBackground();
         for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
             var o = _a[_i];
             o.setsStylingInPokedex();
@@ -222,8 +220,6 @@ var Game = (function () {
         gameOverDiv.style.display = "block";
         gameOverDiv.className = 'active';
         Util.GameOverEffect.effects();
-    };
-    Game.prototype.magikarpsBackground = function () {
     };
     Game.prototype.scoreBoard = function (score) {
         this.score += score;
@@ -463,8 +459,9 @@ var Util;
         function GameOverEffect() {
         }
         GameOverEffect.effects = function () {
-            var gameOver = document.getElementById('gameOver');
-            TweenLite.to(gameOver, 3, { x: 0, y: 300, ease: Bounce.easeInOut });
+            var gameOver = document.getElementById('gameOverInfo');
+            TweenLite.set(gameOver, { x: 518, y: -250 });
+            TweenLite.to(gameOver, 1, { x: 518, y: 92, ease: Bounce });
         };
         return GameOverEffect;
     }());

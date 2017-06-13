@@ -16,9 +16,9 @@ namespace Util {
 
     export class GameOverEffect{
         public static effects(){
-            let gameOver = document.getElementById('gameOver');
-            TweenLite.to(gameOver, 3, {x:0, y:300,ease:Bounce.easeInOut});
-
+            let gameOver = document.getElementById('gameOverInfo');
+            TweenLite.set(gameOver, {x:518, y:-250});
+            TweenLite.to(gameOver, 1, {x:518, y:92,ease:Bounce});
         }
     }
 }
