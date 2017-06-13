@@ -18,12 +18,14 @@ class Game implements Observable{
         this.observers = new Array<Observer>();
 
         this.addNewPokemonBlock();
+        this.magikarpsBackground();
         this.scoreBoard(this.score);
         requestAnimationFrame(() => this.gameLoop());
     }
 
     private gameLoop(){
         this.pokemonBlock.move();
+        this.magikarpsBackground();
 
         for(let o of this.observers){
             o.setsStylingInPokedex();
@@ -37,16 +39,12 @@ class Game implements Observable{
     public static getInstance(){
         if(!Game.instance){
             Game.instance = new Game();
-            console.log("New Game: ", Game.instance);
-        }
-        else{
-            console.log('HAVE GAME');
         }
         return Game.instance;
     }
 
     public addNewPokemonBlock(){
-        // let randomNum:number = Math.floor(1);
+        // let randomNum:number = Math.floor(2);
         let randomNum:number = Math.floor(Math.random() * 3);
 
         switch (randomNum){
@@ -64,7 +62,22 @@ class Game implements Observable{
 
     public stopGame(){
         this.gameOver = true;
+        document.getElementById("finalScore").innerHTML = ""+this.score;
+        this.showGameOverScreen();
     }
+
+    private showGameOverScreen(){
+        let gameOverDiv = document.getElementById('gameOver');
+        gameOverDiv.style.display = "block";
+        gameOverDiv.className = 'active';
+        Util.GameOverEffect.effects();
+    }
+
+    private magikarpsBackground(){
+        // return Util.magikarpBackground;
+
+    }
+
 
     public scoreBoard(score:number){
         this.score += score;

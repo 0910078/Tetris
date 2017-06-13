@@ -176,12 +176,14 @@ var Game = (function () {
         this.pokemonBlocks = new Array();
         this.observers = new Array();
         this.addNewPokemonBlock();
+        this.magikarpsBackground();
         this.scoreBoard(this.score);
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
         this.pokemonBlock.move();
+        this.magikarpsBackground();
         for (var _i = 0, _a = this.observers; _i < _a.length; _i++) {
             var o = _a[_i];
             o.setsStylingInPokedex();
@@ -193,10 +195,6 @@ var Game = (function () {
     Game.getInstance = function () {
         if (!Game.instance) {
             Game.instance = new Game();
-            console.log("New Game: ", Game.instance);
-        }
-        else {
-            console.log('HAVE GAME');
         }
         return Game.instance;
     };
@@ -216,6 +214,16 @@ var Game = (function () {
     };
     Game.prototype.stopGame = function () {
         this.gameOver = true;
+        document.getElementById("finalScore").innerHTML = "" + this.score;
+        this.showGameOverScreen();
+    };
+    Game.prototype.showGameOverScreen = function () {
+        var gameOverDiv = document.getElementById('gameOver');
+        gameOverDiv.style.display = "block";
+        gameOverDiv.className = 'active';
+        Util.GameOverEffect.effects();
+    };
+    Game.prototype.magikarpsBackground = function () {
     };
     Game.prototype.scoreBoard = function (score) {
         this.score += score;
@@ -434,7 +442,6 @@ var Util;
         function CollisionPokemonBlock() {
         }
         CollisionPokemonBlock.checkCollision = function (go1, go2) {
-            console.log("CHECKPKMNHITS");
             return (go1.x < go2.x + go2.width &&
                 go1.x + go1.width > go2.x &&
                 go1.y < go2.y + go2.height &&
@@ -447,11 +454,20 @@ var Util;
         function CollisionGrid() {
         }
         CollisionGrid.checkCollision = function (g1) {
-            console.log(g1.x < 0 || (g1.x + g1.width) > 600 || g1.y + g1.height > 600);
             return (g1.x < 0 || (g1.x + g1.width) > 600 || g1.y + g1.height > 600);
         };
         return CollisionGrid;
     }());
     Util.CollisionGrid = CollisionGrid;
+    var GameOverEffect = (function () {
+        function GameOverEffect() {
+        }
+        GameOverEffect.effects = function () {
+            var gameOver = document.getElementById('gameOver');
+            TweenLite.to(gameOver, 3, { x: 0, y: 300, ease: Bounce.easeInOut });
+        };
+        return GameOverEffect;
+    }());
+    Util.GameOverEffect = GameOverEffect;
 })(Util || (Util = {}));
 //# sourceMappingURL=main.js.map

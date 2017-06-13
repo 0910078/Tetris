@@ -17,7 +17,7 @@ class Prinplup extends GameObject implements Observer{
         window.addEventListener("keydown", (e: KeyboardEvent) => this.onKeyDown(e))
     }
 
-    private setsPropertiesBlock(game){
+    setsPropertiesBlock(game){
         this.y = 0;
         this.x = 270;
         this.width = 60;
@@ -42,11 +42,11 @@ class Prinplup extends GameObject implements Observer{
         }
     }
 
-    private onKeyDown(e: KeyboardEvent): void{
+    onKeyDown(e: KeyboardEvent): void{
         this.behavior.onKeyDown(e.keyCode);
     }
 
-    public setsStylingInPokedex(){
+    setsStylingInPokedex(){
         let pokedexInfo = document.getElementById('pokemonName');
         let pokedexImage = document.getElementById('pokemonGif');
 

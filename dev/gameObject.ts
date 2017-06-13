@@ -49,5 +49,7 @@ abstract class GameObject{
 
     public behavior:Behavior;
 
+    public abstract setsPropertiesBlock(game:Game);
     public abstract move();
+    public abstract onKeyDown(e: KeyboardEvent);
 }
