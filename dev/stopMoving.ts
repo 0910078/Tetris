@@ -1,10 +1,8 @@
 class StopMoving implements Behavior{
     private pokemonBlock : GameObject;
-    private className: string;
     private game:Game = Game.instance;
 
     constructor(tb: GameObject) {
-        this.className = tb.div.className;
         this.pokemonBlock = tb;
     }
 
@@ -21,15 +19,16 @@ class StopMoving implements Behavior{
     };
 
     private addScore(){
-        if(this.className == 'container_piplup'){
-            this.game.scoreBoard(10);
-        }
-        else if(this.className == 'container_prinplup'){
-            this.game.scoreBoard(20);
-        }
-        else{
-            this.game.scoreBoard(40);
-        }
+            if(this.pokemonBlock instanceof Piplup){
+                this.game.scoreBoard(10);
+            }
+            else if(this.pokemonBlock instanceof Prinplup){
+                this.game.scoreBoard(20);
+            }
+
+            else if(this.pokemonBlock instanceof Empeleon){
+                this.game.scoreBoard(40);
+            }
     }
 
     onKeyDown(e:number){};

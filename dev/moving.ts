@@ -1,18 +1,9 @@
-enum Keys{
-    RIGHT = 39,
-    LEFT = 37,
-    A = 65,
-    D = 68
-}
-
 class Moving implements Behavior{
     private pokemonBlock:GameObject;
-    private deg: number;
     private stopMoving:boolean;
 
     constructor(t:GameObject){
         this.pokemonBlock = t;
-        this.deg = 0;
         this.stopMoving = false;
     }
 
@@ -24,14 +15,14 @@ class Moving implements Behavior{
         this.pokemonBlock.behavior = new StopMoving(this.pokemonBlock);
     }
 
-    onKeyDown(k:number){
+    onKeyDown(e:number){
         let xtarget:number = 0;
         let ytarget:number = 0;
 
-        if(k == Keys.RIGHT || k == Keys.D){
+        if(e == Util.Keys.RIGHT || e == Util.Keys.D){
             xtarget = 30;
         }
-        else if(k == Keys.LEFT || k == Keys.A){
+        else if(e == Util.Keys.LEFT || e == Util.Keys.A){
             xtarget = -30;
         }
         this.moveBlock(xtarget, ytarget);
@@ -43,10 +34,10 @@ class Moving implements Behavior{
     }
 
     public draw(){
-        this.pokemonBlock.div.style.transform = "translate("+this.pokemonBlock.x+"px, "+this.pokemonBlock.y+"px) rotate("+this.deg+"deg)"
+        this.pokemonBlock.div.style.transform = "translate("+this.pokemonBlock.x+"px, "+this.pokemonBlock.y+"px)"
     }
 
-    private moveBlock(xDirection, yDirection){
+    private moveBlock(xDirection: number, yDirection:number){
         let hit:boolean = false;
         let game = Game.instance;
 
@@ -69,14 +60,14 @@ class Moving implements Behavior{
         this.pokemonBlock.y = targetObject.y;
     }
 
-    private setsPropertiesFakeObject(targetObject, xDirection, yDirection){
+    private setsPropertiesFakeObject(targetObject:FakeObject, xDirection:number, yDirection:number){
         targetObject.x = this.pokemonBlock.x + xDirection;
         targetObject.y = this.pokemonBlock.y + yDirection;
         targetObject.height = this.pokemonBlock.height;
         targetObject.width = this.pokemonBlock.width;
     }
 
-    private checkHitDetectionOnPokemonBlock(hit, xDirection, yDirection, targetObject){
+    private checkHitDetectionOnPokemonBlock(hit:boolean, xDirection:number, yDirection:number, targetObject:FakeGameObject){
         console.log("checkHITS");
         if(hit){
             if(xDirection > 0 || xDirection < 0){

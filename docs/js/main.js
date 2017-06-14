@@ -238,17 +238,9 @@ var Game = (function () {
 window.addEventListener("load", function () {
     var game = Game.getInstance();
 });
-var Keys;
-(function (Keys) {
-    Keys[Keys["RIGHT"] = 39] = "RIGHT";
-    Keys[Keys["LEFT"] = 37] = "LEFT";
-    Keys[Keys["A"] = 65] = "A";
-    Keys[Keys["D"] = 68] = "D";
-})(Keys || (Keys = {}));
 var Moving = (function () {
     function Moving(t) {
         this.pokemonBlock = t;
-        this.deg = 0;
         this.stopMoving = false;
     }
     Moving.prototype.update = function () {
@@ -257,13 +249,13 @@ var Moving = (function () {
     Moving.prototype.stopCurrentPokemonBlock = function () {
         this.pokemonBlock.behavior = new StopMoving(this.pokemonBlock);
     };
-    Moving.prototype.onKeyDown = function (k) {
+    Moving.prototype.onKeyDown = function (e) {
         var xtarget = 0;
         var ytarget = 0;
-        if (k == Keys.RIGHT || k == Keys.D) {
+        if (e == Util.Keys.RIGHT || e == Util.Keys.D) {
             xtarget = 30;
         }
-        else if (k == Keys.LEFT || k == Keys.A) {
+        else if (e == Util.Keys.LEFT || e == Util.Keys.A) {
             xtarget = -30;
         }
         this.moveBlock(xtarget, ytarget);
@@ -273,7 +265,7 @@ var Moving = (function () {
         this.draw();
     };
     Moving.prototype.draw = function () {
-        this.pokemonBlock.div.style.transform = "translate(" + this.pokemonBlock.x + "px, " + this.pokemonBlock.y + "px) rotate(" + this.deg + "deg)";
+        this.pokemonBlock.div.style.transform = "translate(" + this.pokemonBlock.x + "px, " + this.pokemonBlock.y + "px)";
     };
     Moving.prototype.moveBlock = function (xDirection, yDirection) {
         var hit = false;
@@ -402,7 +394,6 @@ var Prinplup = (function (_super) {
 var StopMoving = (function () {
     function StopMoving(tb) {
         this.game = Game.instance;
-        this.className = tb.div.className;
         this.pokemonBlock = tb;
     }
     StopMoving.prototype.update = function () {
@@ -418,13 +409,13 @@ var StopMoving = (function () {
     };
     ;
     StopMoving.prototype.addScore = function () {
-        if (this.className == 'container_piplup') {
+        if (this.pokemonBlock instanceof Piplup) {
             this.game.scoreBoard(10);
         }
-        else if (this.className == 'container_prinplup') {
+        else if (this.pokemonBlock instanceof Prinplup) {
             this.game.scoreBoard(20);
         }
-        else {
+        else if (this.pokemonBlock instanceof Empeleon) {
             this.game.scoreBoard(40);
         }
     };
@@ -466,5 +457,12 @@ var Util;
         return GameOverEffect;
     }());
     Util.GameOverEffect = GameOverEffect;
+    var Keys;
+    (function (Keys) {
+        Keys[Keys["RIGHT"] = 39] = "RIGHT";
+        Keys[Keys["LEFT"] = 37] = "LEFT";
+        Keys[Keys["A"] = 65] = "A";
+        Keys[Keys["D"] = 68] = "D";
+    })(Keys = Util.Keys || (Util.Keys = {}));
 })(Util || (Util = {}));
 //# sourceMappingURL=main.js.map

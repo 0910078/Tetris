@@ -21,4 +21,11 @@ namespace Util {
             TweenLite.to(gameOver, 1, {x:518, y:92,ease:Bounce});
         }
     }
+
+    export enum Keys{
+        RIGHT = 39,
+        LEFT = 37,
+        A = 65,
+        D = 68
+    }
 }
