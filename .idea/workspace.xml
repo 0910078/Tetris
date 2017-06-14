@@ -2,14 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="55324960-65f2-4ee7-b819-c556822d9feb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/klassendiagram_tetris.png" afterPath="$PROJECT_DIR$/klassendiagram_tetris.png" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/behavior.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/empeleon.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/fakeObject.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/game.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/gameObject.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/moving.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/piplup.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/prinplup.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/stopMoving.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/dev/util.js" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dev/moving.ts" afterPath="$PROJECT_DIR$/dev/moving.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dev/stopMoving.ts" afterPath="$PROJECT_DIR$/dev/stopMoving.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dev/util.ts" afterPath="$PROJECT_DIR$/dev/util.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/js/main.js" afterPath="$PROJECT_DIR$/docs/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/js/main.js.map" afterPath="$PROJECT_DIR$/docs/js/main.js.map" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -38,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="42">
-              <caret line="2" column="15" lean-forward="true" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
+              <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -273,38 +276,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="docs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tetris" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tetris" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="docs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="css" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tetris" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="tetris" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="dev" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -475,18 +446,18 @@
       <workItem from="1497331386657" duration="8352000" />
       <workItem from="1497360729465" duration="2613000" />
       <workItem from="1497388950412" duration="104000" />
+      <workItem from="1497442591453" duration="117000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="115604000" />
+    <option name="totallyTimeSpent" value="115721000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="7" />
     <layout>
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32302406" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3519914" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3516658" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -525,20 +496,6 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
-    <option name="exactExcludedFiles">
-      <list>
-        <option value="$PROJECT_DIR$/dev/moving.js" />
-        <option value="$PROJECT_DIR$/dev/stopMoving.js" />
-        <option value="$PROJECT_DIR$/dev/behavior.js" />
-        <option value="$PROJECT_DIR$/dev/gameObject.js" />
-        <option value="$PROJECT_DIR$/dev/fakeObject.js" />
-        <option value="$PROJECT_DIR$/dev/util.js" />
-        <option value="$PROJECT_DIR$/dev/game.js" />
-        <option value="$PROJECT_DIR$/dev/piplup.js" />
-        <option value="$PROJECT_DIR$/dev/prinplup.js" />
-        <option value="$PROJECT_DIR$/dev/empeleon.js" />
-      </list>
-    </option>
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.md" />
@@ -894,7 +851,7 @@
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="42">
-          <caret line="2" column="15" lean-forward="true" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
+          <caret line="2" column="15" lean-forward="false" selection-start-line="2" selection-start-column="15" selection-end-line="2" selection-end-column="15" />
           <folding />
         </state>
       </provider>
